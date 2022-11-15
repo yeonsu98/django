@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+   Post 목록
+{% endblock title %}
+
+{% block content %}
+        <h1>Post 목록 보기</h1>
+
+        <form action="" method="get"> {# 검색하는 용도라 속도만 빠르면 됨 => get 방식 사용 #}
+                {% csrf_token %}
+                <input type="text" name="keyword">
+                <input type="submit" value="검색">
+        </form>
+
+
+
+        {% for post in post_all %}
+
+                <a href="{% url 'blog:detail' post.id %}">{{post.title}}</a> <br>
+
+        {% endfor %}
+
+        <a href="{% url 'blog:create' %}"> [새글 쓰기] </a>
+
+{% endblock  %}

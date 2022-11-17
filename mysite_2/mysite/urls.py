@@ -20,14 +20,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls')),
     path('account/', include('account.urls')),
-    # path('book/', include('book.urls')),
-    # path('gallery/', include('gallery.urls')),
+    path('book/', include('book.urls')),
+    path('gallery/', include('gallery.urls')),
 ]
 
 
 from django.conf import settings
 from django.conf.urls.static import static
 
-if settings.DEBUG:
+if settings.DEBUG: # 현재 개발 상태인지 확인 -> /media를 인식
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)

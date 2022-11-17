@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     
     'blog',
     'account',
-    # 'book',
-    # 'gallery',
+    'book',
+    'gallery',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -145,11 +145,20 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'mysite', 'static'),
+    os.path.join(BASE_DIR, 'mysite', 'static'), # 1) 각 앱에서 사용하는 static 파일
+                                                # 2) setting.py에 STATICFILES_DIRS
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') # 서비스 시 static 파일 위치
+# 프론트 단을 꾸며주는 css, html 등등 => 정적인 파일, 변하지 않는 파일
+'''
+ 1) 템플릿에서 사용하는 CSS, JavaScript, images
+ 2) static 폴더
+     1) 앱/static/
+     2) STATICFILES_DIRS 변수에 지정된 곳 
+ 3) URL에서 static 폴더에 접근하는 URL
+     STATIC URL 변수에 지정된 곳
+collectstatic : 장고 웹서버에서 실제 서비스하는 위치로 복사해줌
+'''
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

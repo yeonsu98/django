@@ -13,7 +13,7 @@ class Book(models.Model):
         return reverse('book:list')
 
 
-# from book.models import Book
-# for i in range(1, 11):
-#     Book.objects.create(title=f'제목{i}', author=f'저자{i}', publisher=f'출판사{i}')
-# Book.objects.count()  
+#from book.models import Book
+#for i in range(1, 11):
+#    Book.objects.create(title=f'제목{i}', author=f'저자{i}', publisher=f'출판사{i}')
+#Book.objects.count()  

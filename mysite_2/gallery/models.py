@@ -3,7 +3,7 @@ from django.urls import reverse
 
 class Image(models.Model):
     title = models.CharField(max_length=200)
-    photo = models.ImageField()
+    photo = models.ImageField(upload_to='gallery/%Y/%m/%d/') # 파일의 경로 저장
 
     def __str__(self):
         return self.title

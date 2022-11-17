@@ -6,7 +6,7 @@
   <h1>Book 등록</h1>
   <form action="" method="POST">
     {% csrf_token %}
-    <table>{{ form.as_table }}</table>
+    <table>{{ form.as_table }}</table> {# form을 테이블로 자동 생성 #}
     <input type="submit" value="등록" />
   </form>
 {% endblock %}

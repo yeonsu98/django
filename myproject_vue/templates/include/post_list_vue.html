@@ -1,0 +1,121 @@
+<script src="https://unpkg.com/vue@next"></script> <!-- html, js 연결작업해서 서로 간 상호작용 가능하도록 하는 vue -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script> <!-- 비동기 통신 axios -->
+
+<script>
+    const PostListApp = { // const : 상수
+        delimiters: ['[[', ']]'],
+
+        data() { // 변수 선언 및 초기값 지정
+            return {
+                postList: [],
+                category: '',
+                tag: '',
+                pageCnt: 1,
+                curPage: 1,
+                currentYear: new Date().getFullYear(),
+            }
+        },
+
+        computed: {
+            pages() { 
+                console.log("pages()...");
+                let pages3 = []; // 같은 선언된 변수가 있다면 오류체크
+                if (this.pageCnt === 1) pages3 = [1];
+                else if (this.pageCnt === 2) pages3 = [1, 2];
+                else if (this.pageCnt >= 3) {
+                    if (this.curPage === 1) pages3 = [1, 2, 3];
+                    else if (this.curPage === this.pageCnt) pages3 = [this.pageCnt-2, this.pageCnt-1, this.pageCnt];
+                    else pages3 = [this.curPage-1, this.curPage, this.curPage+1];
+                }
+                return pages3
+            },
+
+            prevClass() {
+                console.log("prevClass()...");
+                if (this.curPage === 1) return 'page-item disabled';
+                else return 'page-item my-link';
+            },
+
+            nextClass() {
+                console.log("nextClass()...");
+                if (this.curPage === this.pageCnt) return 'page-item disabled';
+                else return 'page-item my-link';                
+            },
+
+            // pageClass(page) {},
+        },
+
+        created() { // 객체 생성 시 호출
+            console.log("PostListApp created()...");
+            const params = new URL(location).searchParams; // url 만들기 -> category, tag값 추출하려고 사용
+            this.category = params.get('category');        // this = vue 객체
+            this.tag = params.get('tag');
+            this.fetchPostList(); 
+        },
+
+        methods: {
+            fetchPostList(page=1) {
+                console.log("fetchPostList()...", page, this.category, this.tag);
+                let getUrl = ''; // 기존에 변수 있다면 오류남
+                if (this.category) getUrl = `/api/post/list/?page=${page}&category=${this.category}`;
+                else if (this.tag) getUrl = `/api/post/list/?page=${page}&tag=${this.tag}`;
+                else getUrl = `/api/post/list/?page=${page}`; 
+
+                axios.get(getUrl) // get 방식으로 요청 -> 데이터 읽어주기 | post -> 데이터 조작
+                    .then(res => { // res : 응답정보 객체
+                        console.log("FETCH POSTLIST GET RES", res);
+                        this.postList = res.data.postList; // res.data : 응답 데이터
+                        this.pageCnt = res.data.pageCnt;
+                        this.curPage = res.data.curPage;
+                    })
+                    .catch(err => {
+                        console.log("FETCH POSTLIST GET ERR.RESPONSE", err.response);
+                        alert(`${err.response.status} ${err.response.statusText}`);
+                    });
+            },
+
+            pageChanged(page) {
+                console.log("pageChanged()...", page);
+                this.curPage = page;
+                this.fetchPostList(this.curPage);
+            },
+
+            prevPage() {
+                console.log("prevPage()...", this.curPage);
+                if (this.curPage <= 1) return;
+                else this.curPage = this.curPage - 1;
+                this.fetchPostList(this.curPage);
+            },
+
+            nextPage() {
+                console.log("nextPage()...", this.curPage);
+                if (this.curPage >= this.pageCnt) return;
+                else this.curPage = this.curPage + 1;
+                this.fetchPostList(this.curPage);
+            },
+
+            firstPage() {
+                console.log("firstPage()", this.curPage);
+                if (this.curPage <= 1) return;
+                else this.curPage = 1;
+                this.fetchPostList(this.curPage);
+            },
+            
+            lastPage() {
+                console.log("lastPage()", this.curPage);
+                if (this.curPage >= this.pageCnt) return;
+                else this.curPage = this.pageCnt;
+                this.fetchPostList(this.curPage);
+            },            
+
+            pageClass(page) {
+                console.log("pageClass()...", page);
+                if (this.curPage === page) return 'page-item my-link active';
+                else return 'page-item my-link';                
+            },
+        },
+    } // PostListApp js 객체
+
+    Vue.createApp(PostListApp).mount('#page-top') // Vue 객체 생성 
+                                                  // data() -> created() -> computed()
+</script>

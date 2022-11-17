@@ -32,8 +32,8 @@
 
             prevClass() {
                 console.log("prevClass()...");
-                if (this.curPage === 1) return 'page-item disabled';
-                else return 'page-item my-link';
+                if (this.curPage === 1) return 'page-item disabled'; // 페이지가 1이면 grey로 
+                else return 'page-item my-link';                     // 페이지가 1이 아니면
             },
 
             nextClass() {

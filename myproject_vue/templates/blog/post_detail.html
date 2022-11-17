@@ -34,14 +34,14 @@
             <!-- Post title-->
             <h1 class="fw-bolder mb-1">[[ post.title ]]</h1>
             <hr>
-            <p>
+            <p> 
                 <span>[[ post.update_dt ]]</span> &emsp;
 
                 <i class="fas fa-copyright"></i> &nbsp;
                 <span class="text-success my-link" @click="serverPage(post.category, '')">[[ post.category ]]</span> &emsp;
                 
                 <i class="fas fa-tag"></i> &nbsp;
-                <span v-for="(tag, index) in post.tags" :key="index">
+                <span v-for="(tag, index) in post.tags" :key="index"> <!-- tags -->
                     <span v-if="index !== 0">, </span>
                     <span class="text-success my-link" @click="serverPage('', tag)">[[ tag ]]</span>
                 </span> &emsp;
@@ -115,6 +115,7 @@
                         </span>
                     </div>
                 </div>
+                <!-- Tags widget-->
                 <div class="card mb-4">
                     <div class="card-header">Tag Cloud</div>
                     <div class="card-body">
